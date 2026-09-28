@@ -9,7 +9,14 @@
     '/ranking': 'Ranking',
     '/buzon': 'Buzón',
     '/apodo': 'Elige apodo',
+    '/kit': 'Juan o Minga',
   }
 </script>
 
-<Placeholder title={titles[router.current]} />
+{#if import.meta.env.DEV && router.current === '/kit'}
+  {#await import('./screens/Kit.svelte') then Kit}
+    <Kit.default />
+  {/await}
+{:else}
+  <Placeholder title={titles[router.current]} />
+{/if}

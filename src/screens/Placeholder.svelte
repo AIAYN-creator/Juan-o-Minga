@@ -4,8 +4,8 @@
   let { title }: { title: string } = $props()
 </script>
 
-<main>
-  <h1>{title}</h1>
+<main class="page">
+  <h1 class="gold-text">{title}</h1>
   <p>En obras. Vuelve pronto, concursante.</p>
   <nav>
     <a href={href('/')}>Inicio</a>
@@ -17,13 +17,18 @@
 
 <style>
   main {
-    padding: 2rem 1rem;
+    display: grid;
+    gap: var(--space-4);
     text-align: center;
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
   }
 
   nav {
     display: flex;
-    gap: 1rem;
+    gap: var(--space-4);
     justify-content: center;
     flex-wrap: wrap;
   }
