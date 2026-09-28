@@ -1,0 +1,23 @@
+/* Minimal reset. The real theme (palette, fonts, stage background) lands in design-system. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: #1a0508;
+  color: #f5e6c8;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+a {
+  color: #f5c542;
+}
