@@ -27,7 +27,7 @@
   }
 
   .lg {
-    font-size: clamp(3.25rem, 17vw, 5.25rem);
+    font-size: clamp(2.75rem, 14vw, 5rem);
   }
 
   .md {

@@ -52,7 +52,9 @@
     letter-spacing: 0.04em;
     text-decoration: none;
     text-transform: uppercase;
-    white-space: nowrap;
+    text-align: center;
+    text-wrap: balance;
+    max-width: 100%;
     color: var(--fg);
     background: linear-gradient(180deg, var(--hi) 0%, var(--base) 55%, var(--lo) 100%);
     box-shadow:
