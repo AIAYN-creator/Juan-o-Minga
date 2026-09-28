@@ -1,0 +1,43 @@
+Copyright (c) 2026 AIAYN-creator. Todos los derechos reservados.
+All rights reserved.
+
+ES
+--
+Este repositorio es público solo para poder publicarlo en GitHub Pages. Que el
+código sea visible NO concede ningún permiso de uso. Salvo autorización previa
+y por escrito del titular, queda prohibido copiar, modificar, distribuir,
+publicar, sublicenciar o crear obras derivadas de cualquier parte de este
+repositorio, incluidos el código, el diseño visual, los textos de la interfaz
+y los recursos gráficos.
+
+"Juan o Minga", su logotipo y su identidad visual son signos distintivos del
+titular y no pueden usarse sin su permiso.
+
+Las frases del juego NO forman parte de este repositorio: se almacenan en una
+base de datos privada. Queda prohibido extraerlas, recopilarlas o reutilizarlas,
+de forma manual o automatizada, en todo o en parte, incluida la creación de
+bases de datos, juegos o publicaciones a partir de ellas.
+
+Las únicas excepciones son las que concedan los Términos de Servicio de GitHub
+(ver y hacer fork dentro de GitHub), que no autorizan ningún otro uso.
+
+EN
+--
+This repository is public only so that it can be served by GitHub Pages.
+Visibility of the source code grants NO license. Without the prior written
+permission of the copyright holder, you may not copy, modify, distribute,
+publish, sublicense or create derivative works of any part of this repository,
+including its code, visual design, interface copy and graphic assets.
+
+"Juan o Minga", its logo and visual identity are distinctive signs of the
+copyright holder and may not be used without permission.
+
+The game's phrases are NOT part of this repository; they live in a private
+database. Extracting, compiling or reusing them, manually or automatically, in
+whole or in part, is prohibited.
+
+The only exceptions are those granted by the GitHub Terms of Service (viewing
+and forking on GitHub), which authorise no other use.
+
+Third-party components (npm dependencies and the fonts Bungee, Monoton, Rubik
+and Doto, under the SIL Open Font License) keep their own licenses.

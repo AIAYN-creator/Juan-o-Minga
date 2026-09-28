@@ -29,3 +29,7 @@ Otros scripts: `npm run check` (tipos), `npm run test:db` (migraciones y RLS sob
 > Las frases reales **nunca** se commitean: este repo es público. El seed solo lleva frases inventadas.
 
 <!-- Pendiente (tarjeta launch): crear el proyecto de Supabase, configurar Google OAuth, desplegar, aprobar frases y añadir el dominio propio. -->
+
+## Licencia
+
+Todos los derechos reservados. El repositorio es público solo para poder servirlo con GitHub Pages: ver el código no da permiso para usarlo. Consulta [LICENSE](LICENSE).
