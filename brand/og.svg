@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Open Graph banner (WhatsApp, Telegram, X...). Rendered to public/og-image.png by scripts/build-brand.mjs -->
+  <defs>
+    <radialGradient id="stage" cx="0.5" cy="0.5" r="0.75">
+      <stop offset="0" stop-color="#521024"/>
+      <stop offset="0.6" stop-color="#1c040d"/>
+      <stop offset="1" stop-color="#0f0107"/>
+    </radialGradient>
+    <radialGradient id="spot" cx="0.5" cy="0" r="0.6">
+      <stop offset="0" stop-color="#ffe296" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#ffe296" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.25"/>
+      <stop offset="0.5" stop-color="#fff" stop-opacity="0.03"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.25"/>
+    </linearGradient>
+    <pattern id="curtain" width="44" height="630" patternUnits="userSpaceOnUse">
+      <rect width="44" height="630" fill="url(#fold)"/>
+    </pattern>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffbe0"/>
+      <stop offset="0.3" stop-color="#ffe28a"/>
+      <stop offset="0.5" stop-color="#f0b429"/>
+      <stop offset="0.56" stop-color="#a8680a"/>
+      <stop offset="0.8" stop-color="#f7c948"/>
+      <stop offset="1" stop-color="#cf8f12"/>
+    </linearGradient>
+    <radialGradient id="bulb" cx="0.35" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.45" stop-color="#fff1b8"/>
+      <stop offset="1" stop-color="#f0b429"/>
+    </radialGradient>
+    <filter id="neonCyan" x="-20%" y="-40%" width="140%" height="180%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="b1"/>
+      <feFlood flood-color="#2ff3ff" flood-opacity="0.75"/>
+      <feComposite in2="b1" operator="in" result="g1"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="b2"/>
+      <feFlood flood-color="#2ff3ff"/>
+      <feComposite in2="b2" operator="in" result="g2"/>
+      <feMerge>
+        <feMergeNode in="g1"/>
+        <feMergeNode in="g2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="neonMagenta" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="b1"/>
+      <feFlood flood-color="#ff2fd6" flood-opacity="0.9"/>
+      <feComposite in2="b1" operator="in" result="g1"/>
+      <feMerge>
+        <feMergeNode in="g1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Stage -->
+  <rect width="1200" height="630" fill="url(#stage)"/>
+  <rect width="1200" height="630" fill="url(#curtain)"/>
+  <rect width="1200" height="630" fill="url(#spot)"/>
+
+  <!-- Marquee frame -->
+  <rect x="18" y="18" width="1164" height="594" rx="28" fill="none" stroke="url(#gold)" stroke-width="10"/>
+  <g id="bulbs" fill="url(#bulb)" stroke="#7a4a06" stroke-width="1.5">__BULBS__</g>
+
+  <!-- Emblem -->
+  <image x="40" y="55" width="520" height="520" href="__MARK__" filter="url(#shadow)"/>
+
+  <!-- Wordmark -->
+  <g font-family="Monoton" text-anchor="middle" fill="#e6feff" filter="url(#neonCyan)">
+    <text x="860" y="210" font-size="116" letter-spacing="4">JUAN</text>
+    <text x="860" y="378" font-size="116" letter-spacing="4">MINGA</text>
+  </g>
+  <text x="860" y="278" font-family="Bungee" font-size="54" text-anchor="middle" fill="#ffe6fa"
+        transform="rotate(-8 860 262)" filter="url(#neonMagenta)">o</text>
+
+  <!-- Tagline -->
+  <text x="860" y="448" font-family="Rubik, Rubik Light" font-weight="700" font-size="31" text-anchor="middle" fill="#fff7e6">¿Lo dijo uno de la charanga</text>
+  <text x="860" y="488" font-family="Rubik, Rubik Light" font-weight="700" font-size="31" text-anchor="middle" fill="#fff7e6">o un peñista?</text>
+
+  <!-- Pill -->
+  <rect x="660" y="515" width="400" height="56" rx="28" fill="#ee1b3a" stroke="#ffd866" stroke-width="4"/>
+  <text x="860" y="553" font-family="Bungee" font-size="24" text-anchor="middle" fill="#fff" letter-spacing="1">3 FRASES · 1 INTENTO</text>
+</svg>

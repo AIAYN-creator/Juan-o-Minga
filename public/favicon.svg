@@ -1,1 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🎰</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Simplified emblem for tiny sizes: gold slot machine, red "?", crest band, croc-green lever knob -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff1b8"/>
+      <stop offset="0.5" stop-color="#f0b429"/>
+      <stop offset="1" stop-color="#b87708"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#330917"/>
+  <path d="M46 40 H55 V16" fill="none" stroke="#f0b429" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="55" cy="12" r="6.5" fill="#5cc82e" stroke="#123f0a" stroke-width="2"/>
+  <path d="M8 56 V22 Q8 9 28 8 Q48 9 48 22 V56 Z" fill="url(#g)" stroke="#7a4a06" stroke-width="2"/>
+  <rect x="13" y="21" width="30" height="20" rx="4" fill="#fffdf6" stroke="#7a4a06" stroke-width="2"/>
+  <path d="M23.5 27 C23.5 22.5 32.5 22.5 32.5 27 C32.5 30.5 28 30.5 28 34" fill="none" stroke="#ee1b3a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="28" cy="38" r="2" fill="#ee1b3a"/>
+  <rect x="13" y="45" width="30" height="7" fill="#c60b1e"/>
+  <rect x="13" y="47.3" width="30" height="2.6" fill="#ffc400"/>
+</svg>
