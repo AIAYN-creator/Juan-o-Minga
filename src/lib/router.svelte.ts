@@ -29,3 +29,9 @@ export function href(route: Route): string {
 export function navigate(route: Route): void {
   window.location.hash = route
 }
+
+/** Like navigate, but replaces the history entry: for guards, so Back doesn't bounce. */
+export function redirect(route: Route): void {
+  window.history.replaceState(window.history.state, '', `#${route}`)
+  router.current = route
+}

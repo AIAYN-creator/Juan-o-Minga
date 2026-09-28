@@ -1,12 +1,14 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte'
   import { href } from '../lib/router.svelte'
 
-  let { title }: { title: string } = $props()
+  let { title, children }: { title: string; children?: Snippet } = $props()
 </script>
 
 <main class="page">
   <h1 class="gold-text">{title}</h1>
   <p>En obras. Vuelve pronto, concursante.</p>
+  {@render children?.()}
   <nav>
     <a href={href('/')}>Inicio</a>
     <a href={href('/jugar')}>Jugar</a>

@@ -3,15 +3,16 @@ import { createClient } from '@supabase/supabase-js'
 const url = import.meta.env.VITE_SUPABASE_URL
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!url || !anonKey) {
-  throw new Error(
-    'Faltan VITE_SUPABASE_URL o VITE_SUPABASE_ANON_KEY: copia .env.example a .env.local y rellénalo.',
-  )
-}
+/** Set when the build has no Supabase settings: App shows it instead of a blank page. */
+export const configError: string | null =
+  url && anonKey
+    ? null
+    : 'Faltan VITE_SUPABASE_URL o VITE_SUPABASE_ANON_KEY: copia .env.example a .env.local y rellénalo (o crea las variables del repo en GitHub).'
 
 // PKCE returns the OAuth code in the query string (?code=...), so it doesn't
 // collide with the hash router. supabase-js exchanges it and strips it from the URL.
-export const supabase = createClient(url, anonKey, {
+// With no settings the client points nowhere; configError stops the app first.
+export const supabase = createClient(url || 'http://supabase.invalid', anonKey || 'missing', {
   auth: {
     flowType: 'pkce',
     detectSessionInUrl: true,
