@@ -58,3 +58,23 @@ end
 $$;
 
 grant execute on all functions in schema tests to anon, authenticated;
+
+-- Like expect_error, but matches the exception message (our RPCs raise stable
+-- snake_case messages such as 'daily_limit') instead of the SQLSTATE.
+create function tests.expect_error_message(sql text, expected_message text, label text)
+returns void
+language plpgsql as $$
+begin
+  begin
+    execute sql;
+  exception when others then
+    if sqlerrm <> expected_message then
+      raise exception '% -- expected error "%", got % (%)', label, expected_message, sqlstate, sqlerrm;
+    end if;
+    return;
+  end;
+  raise exception '% -- expected error "%", but it succeeded', label, expected_message;
+end
+$$;
+
+grant execute on function tests.expect_error_message(text, text, text) to anon, authenticated;
