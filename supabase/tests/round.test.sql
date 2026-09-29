@@ -161,3 +161,19 @@ begin
 end
 $$;
 reset role;
+
+-- ---- answering a round that is already over (loaded before midnight) ------------
+select tests.login((select id from tests.ids where name = 'beto'));
+set role authenticated;
+do $$
+begin
+  perform tests.expect_error_message(
+    format('select * from submit_answer(2::smallint, %L, %L::date)', 'charanga',
+           ((now() at time zone 'Europe/Madrid')::date - 1)::text),
+    'round_over', 'yesterday''s round can no longer be answered');
+  -- today's date is accepted
+  perform submit_answer(2::smallint, 'charanga', (now() at time zone 'Europe/Madrid')::date);
+  perform tests.expect_count('select * from answers', 2, 'answer with today''s date recorded');
+end
+$$;
+reset role;

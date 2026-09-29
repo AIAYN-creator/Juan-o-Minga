@@ -45,6 +45,37 @@ class Round {
     this.status = 'ready'
   }
 
+  /** First unanswered row, or null when the day is done. */
+  readonly current = $derived(this.rows.find((r) => !r.answered) ?? null)
+
+  /**
+   * Answers one position. The server records it and returns the verdict with
+   * the reveal; the row is updated in place. Returns an error message or null.
+   */
+  async submit(position: number, choice: Side): Promise<string | null> {
+    const row = this.rows.find((r) => r.position === position)
+    if (!row || row.answered) return 'Esa frase ya está respondida.'
+
+    const { data, error } = await supabase
+      .rpc('submit_answer', { p_position: position, p_choice: choice, p_round_date: row.round_date })
+      .single()
+
+    if (error) {
+      if (error.message === 'already_answered' || error.message === 'round_over') {
+        // Answered in another tab, or midnight passed: the server is the truth.
+        await this.load()
+        return error.message === 'round_over'
+          ? 'Se acabó la ronda de ayer: aquí tienes la de hoy.'
+          : 'Esa frase ya la habías respondido.'
+      }
+      return 'No hemos podido registrar tu respuesta. Prueba otra vez.'
+    }
+
+    const reveal = data as Pick<RoundRow, 'is_correct' | 'side' | 'author_display' | 'context'>
+    Object.assign(row, { ...reveal, answered: true, choice })
+    return null
+  }
+
   reset() {
     this.rows = []
     this.status = 'idle'

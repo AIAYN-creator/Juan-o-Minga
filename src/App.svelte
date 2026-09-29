@@ -4,10 +4,10 @@
   import { session } from './lib/session.svelte'
   import { configError } from './lib/supabase'
   import NeonLogo from './lib/ui/NeonLogo.svelte'
+  import Game from './screens/Game.svelte'
   import Intro from './screens/Intro.svelte'
   import Leaderboard from './screens/Leaderboard.svelte'
   import Nickname from './screens/Nickname.svelte'
-  import Placeholder from './screens/Placeholder.svelte'
   import SuggestionBox from './screens/SuggestionBox.svelte'
 
   // Routes that need a player with a nickname. The ranking is public.
@@ -58,8 +58,7 @@
 {:else if router.current === '/buzon'}
   <SuggestionBox />
 {:else if router.current === '/jugar'}
-  <!-- The game screen lands in the game-flow card -->
-  <Placeholder title="Jugar" />
+  <Game />
 {:else}
   <Intro />
 {/if}
