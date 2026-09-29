@@ -98,6 +98,8 @@
     <ArcadeButton variant="gold" onclick={() => howTo.open()}>¿Cómo se juega?</ArcadeButton>
   </nav>
 
+  <p class="legal"><a href="privacidad.html">Privacidad</a></p>
+
   {#if session.status === 'ready'}
     <p class="who">
       Concursante: <strong>{session.profile?.nickname}</strong> ·
@@ -195,6 +197,15 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--space-5) var(--space-3);
+  }
+
+  .legal {
+    font-size: var(--text-xs);
+    text-align: center;
+  }
+
+  .legal a {
+    color: var(--ink-mute);
   }
 
   .who {
