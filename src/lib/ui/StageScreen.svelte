@@ -58,7 +58,7 @@
     transform: translate(-50%, -50%);
     padding: 0.3rem 0.85rem;
     border-radius: var(--radius-pill);
-    background: var(--red-500);
+    background: var(--red-600); /* white on red-500 misses AA at this size */
     box-shadow:
       0 0 0 2px var(--gold-300),
       0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);

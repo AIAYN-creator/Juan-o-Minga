@@ -90,7 +90,9 @@
   function land(index: number) {
     const n = items.length
     landIndex = index
-    if (motion.reduced) {
+    // No motion wanted, or nobody watching (hidden tabs pause animation frames):
+    // go straight to the result so the game never waits on an unseen spin.
+    if (motion.reduced || document.hidden) {
       landTo = mod(index, n)
       finish()
       return
@@ -121,7 +123,16 @@
     })
   })
 
-  onDestroy(() => cancelAnimationFrame(raf))
+  // Leaving the tab mid-landing: finish now instead of freezing half-way.
+  function onVisibility() {
+    if (document.hidden && mode === 'land') finish()
+  }
+  document.addEventListener('visibilitychange', onVisibility)
+
+  onDestroy(() => {
+    cancelAnimationFrame(raf)
+    document.removeEventListener('visibilitychange', onVisibility)
+  })
 
   const visible = $derived.by(() => {
     const base = Math.floor(pos)

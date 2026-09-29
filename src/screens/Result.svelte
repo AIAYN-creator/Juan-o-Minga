@@ -89,7 +89,7 @@
 </script>
 
 <main class="page result">
-  <p class="kicker">Juan o Minga #{round.number ?? ''}</p>
+  <h1 class="kicker">Juan o Minga #{round.number ?? ''}</h1>
 
   <Marquee band={18} spacing={20}>
     <div class="machine">

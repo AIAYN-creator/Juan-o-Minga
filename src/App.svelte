@@ -34,10 +34,19 @@
     else if (launch.open === false && gameOnly.includes(route)) redirect('/')
   })
 
-  // Each screen starts at the top.
+  const titles: Partial<Record<Route, string>> = {
+    '/jugar': 'Jugar',
+    '/resultado': 'Tu resultado',
+    '/ranking': 'Ranking',
+    '/buzon': 'Buzón',
+    '/apodo': 'Elige apodo',
+  }
+
+  // Each screen starts at the top and names the tab.
   $effect(() => {
-    void router.current
+    const route = router.current
     window.scrollTo(0, 0)
+    document.title = titles[route] ? `${titles[route]} · Juan o Minga` : 'Juan o Minga'
   })
 </script>
 
@@ -57,18 +66,25 @@
     <img class="spin" src={mark} alt="" width="120" height="120" />
     <p class="neon-cyan loading">Encendiendo el plató…</p>
   </main>
-{:else if router.current === '/apodo'}
-  <Nickname />
-{:else if router.current === '/ranking'}
-  <Leaderboard />
-{:else if router.current === '/buzon'}
-  <SuggestionBox />
-{:else if router.current === '/jugar'}
-  <Game />
-{:else if router.current === '/resultado'}
-  <Result />
 {:else}
-  <Intro />
+  <!-- Quick fade between screens -->
+  {#key router.current}
+    <div class="screen">
+      {#if router.current === '/apodo'}
+        <Nickname />
+      {:else if router.current === '/ranking'}
+        <Leaderboard />
+      {:else if router.current === '/buzon'}
+        <SuggestionBox />
+      {:else if router.current === '/jugar'}
+        <Game />
+      {:else if router.current === '/resultado'}
+        <Result />
+      {:else}
+        <Intro />
+      {/if}
+    </div>
+  {/key}
 {/if}
 
 <style>
@@ -84,6 +100,18 @@
   .loading {
     font-family: var(--font-display);
     font-size: var(--text-lg);
+  }
+
+  /* Opacity only: a transform here would become the containing block of the
+     screens' position: fixed layers (reveal sheet, red flash) and shift them. */
+  .screen {
+    animation: screen-in 200ms ease-out both;
+  }
+
+  @keyframes screen-in {
+    from {
+      opacity: 0;
+    }
   }
 
   .dev {

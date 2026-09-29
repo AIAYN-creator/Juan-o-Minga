@@ -102,7 +102,8 @@
   }
 </script>
 
-<main class="page game" class:fx-shake={shaking} onanimationend={() => (shaking = false)}>
+<main class="page game" class:fx-shake={shaking} onanimationend={() => (shaking = false)} inert={phase !== 'ask'}>
+  <h1 class="sr-only">Juan o Minga{round.number ? ` #${round.number}` : ''}: ¿quién lo dijo?</h1>
   <header class="top">
     <a class="back" href={href('/')}>‹ Plató</a>
     {#if round.number}<p class="num led">#{round.number}</p>{/if}
