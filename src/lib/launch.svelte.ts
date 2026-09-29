@@ -2,7 +2,14 @@
 // Only for the countdown and to avoid pointless calls. The server refuses the
 // round before launch_at anyway ('not_launched').
 
-import { supabase } from './supabase'
+import { configError, supabase } from './supabase'
+
+/**
+ * Opening night as shipped. app_config.launch_at in the database wins; this is
+ * the fallback so the countdown still shows when Supabase isn't reachable or
+ * configured yet. Keep it in sync with the launch_gate migration.
+ */
+export const DEFAULT_LAUNCH_AT = new Date('2026-10-02T18:30:00+02:00')
 
 class Launch {
   at = $state<Date | null>(null)
@@ -17,12 +24,19 @@ class Launch {
 
   async load() {
     if (this.status === 'loading' || this.status === 'ready') return
+    if (configError) {
+      this.status = 'error'
+      this.at = DEFAULT_LAUNCH_AT
+      this.#tick()
+      return
+    }
     this.status = 'loading'
     const { data, error } = await supabase.from('app_config').select('launch_at').single()
     if (error || !data) {
-      // Unknown: behave as open and let the server have the last word.
+      // Unreachable: fall back to the shipped date; the server still decides.
       this.status = 'error'
-      this.at = new Date(0)
+      this.at = DEFAULT_LAUNCH_AT
+      this.#tick()
       return
     }
     this.at = new Date((data as { launch_at: string }).launch_at)

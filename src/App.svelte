@@ -4,6 +4,8 @@
   import { redirect, router, type Route } from './lib/router.svelte'
   import { session } from './lib/session.svelte'
   import { configError } from './lib/supabase'
+  import LaunchCountdown from './lib/ui/LaunchCountdown.svelte'
+  import Marquee from './lib/ui/Marquee.svelte'
   import NeonLogo from './lib/ui/NeonLogo.svelte'
   import Game from './screens/Game.svelte'
   import Intro from './screens/Intro.svelte'
@@ -55,10 +57,20 @@
     <Kit.default />
   {/await}
 {:else if configError}
-  <main class="page notice">
-    <img src={mark} alt="" width="140" height="140" />
-    <NeonLogo size="md" />
-    <p>El plató está en obras. Vuelve en un rato.</p>
+  <!-- No backend yet: still a proper teaser page with the launch countdown -->
+  <main class="page soon">
+    <Marquee>
+      <div class="soon-stage">
+        <img class="soon-emblem" src={mark} alt="" width="160" height="160" />
+        <NeonLogo />
+        <p class="tagline">¿Lo dijo uno de la charanga o un peñista?</p>
+        {#if launch.at && launch.open === false}
+          <LaunchCountdown ms={launch.msLeft} at={launch.at} />
+        {:else}
+          <p>El plató está en obras. Vuelve en un rato.</p>
+        {/if}
+      </div>
+    </Marquee>
     {#if import.meta.env.DEV}<p class="dev">{configError}</p>{/if}
   </main>
 {:else if session.status === 'loading'}
@@ -112,6 +124,35 @@
     from {
       opacity: 0;
     }
+  }
+
+  .soon {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    min-height: 100dvh;
+    align-content: center;
+  }
+
+  .soon-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    text-align: center;
+  }
+
+  .soon-emblem {
+    width: min(42vw, 10rem);
+    height: auto;
+    filter: drop-shadow(0 0.6rem 1rem rgba(0, 0, 0, 0.55));
+  }
+
+  .tagline {
+    max-width: 18rem;
+    font-weight: 600;
+    color: var(--ink-dim);
   }
 
   .dev {
