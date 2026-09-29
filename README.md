@@ -5,6 +5,7 @@
 Juego web diario para la Peña Los Mingas y la Xaranga A Vorem. Cada día salen las mismas 3 frases para todo el mundo y hay que adivinar si la dijo alguien de la charanga (**AVOREM**) o un peñista (**PEÑISTA**). Tiene ranking público, buzón para proponer frases y un resultado para compartir por WhatsApp.
 
 - **Web:** https://aiayn-creator.github.io/Juan-o-Minga/. Pasará a `juanominga.com`.
+- **Teaser:** [`brand/teaser-4x3.mp4`](brand/teaser-4x3.mp4), 19 s en formato tele antigua.
 - **Stack:** Vite + Svelte 5 + TypeScript, una SPA estática en GitHub Pages, sobre Supabase: Postgres, Auth con Google y funciones RPC. No hay servidor propio.
 
 ## Estado
@@ -61,7 +62,7 @@ npm run dev
 - `src/lib/ui/` — componentes del plató: marquesina, logo de neón, pulsadores, rodillo, contadores, bombillas, pantalla de la frase…
 - `src/styles/` — tokens (paleta, tipografías, movimiento) y estilos globales.
 - `public/` — archivos que se sirven tal cual: favicon, iconos y banner para compartir (los tres últimos, generados).
-- `brand/` — la marca: SVG fuente del emblema, el icono y el banner, `build.mjs` (lo que ejecuta `npm run brand`) y `preview.html`.
+- `brand/` — la marca: SVG fuente del emblema, el icono y el banner, `build.mjs` (lo que ejecuta `npm run brand`), `preview.html` y el teaser en 4:3 (`teaser-4x3.mp4`).
 - `supabase/migrations/` — esquema, RLS y RPCs. Se aplican en orden en el editor SQL de Supabase.
 - `supabase/tests/` — tests SQL, su runner `run.mjs` (`npm run test:db`) y `_supabase_stub.sql`, que imita lo que trae un proyecto de Supabase (roles y `auth.uid()`).
 - `supabase/seed.sql` — 12 frases **inventadas**, solo para proyectos de desarrollo.
