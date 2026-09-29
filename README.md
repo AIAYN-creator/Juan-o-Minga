@@ -60,10 +60,14 @@ npm run dev
 - `src/lib/` — sesión (`session.svelte.ts`), ronda del día (`round.svelte.ts`), router por hash, cliente de Supabase y hora de Madrid.
 - `src/lib/ui/` — componentes del plató: marquesina, logo de neón, pulsadores, rodillo, contadores, bombillas, pantalla de la frase…
 - `src/styles/` — tokens (paleta, tipografías, movimiento) y estilos globales.
-- `brand/` — fuentes SVG de la marca: emblema, icono y banner para compartir.
+- `public/` — archivos que se sirven tal cual: favicon, iconos y banner para compartir (los tres últimos, generados).
+- `brand/` — la marca: SVG fuente del emblema, el icono y el banner, `build.mjs` (lo que ejecuta `npm run brand`) y `preview.html`.
 - `supabase/migrations/` — esquema, RLS y RPCs. Se aplican en orden en el editor SQL de Supabase.
-- `supabase/tests/` — tests SQL. `_supabase_stub.sql` imita lo que trae un proyecto de Supabase (roles y `auth.uid()`).
+- `supabase/tests/` — tests SQL, su runner `run.mjs` (`npm run test:db`) y `_supabase_stub.sql`, que imita lo que trae un proyecto de Supabase (roles y `auth.uid()`).
 - `supabase/seed.sql` — 12 frases **inventadas**, solo para proyectos de desarrollo.
+- `.github/workflows/` — `test.yml` (tipos y tests en cada push) y `deploy.yml` (publicación en Pages).
+
+En la raíz solo queda lo que las herramientas esperan encontrar ahí: `index.html` (entrada de Vite), `vite.config.ts`, los tres `tsconfig*.json` (app y config de Node, como en la plantilla oficial), `package.json`, `.env.example`, `LICENSE` y este README.
 
 ## Puesta en marcha
 

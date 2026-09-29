@@ -9,8 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
-    "test:db": "node scripts/test-db.mjs",
-    "brand": "node scripts/build-brand.mjs"
+    "test:db": "node supabase/tests/run.mjs",
+    "brand": "node brand/build.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",

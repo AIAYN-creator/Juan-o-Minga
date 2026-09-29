@@ -3,7 +3,7 @@
 //                                   stay well under WhatsApp's ~300 KB preview limit
 //   apple-touch-icon.png   180x180  iOS home screen
 //   icon-512.png           512x512  Android / generic
-// Uses the same fonts as the site (Fontsource woff2, decompressed to temp TTFs,
+// Lives next to the SVGs it renders. Uses the same fonts as the site (Fontsource woff2, decompressed to temp TTFs,
 // since resvg only reads font files). Rubik is the static 700 cut: resvg doesn't
 // do variable-font weights.
 // Usage: npm run brand   (re-run after editing anything in brand/)
@@ -16,7 +16,7 @@ import { Resvg } from '@resvg/resvg-js'
 import sharp from 'sharp'
 import wawoff2 from 'wawoff2'
 
-const root = (p) => fileURLToPath(new URL(`../${p}`, import.meta.url))
+const root = (p) => fileURLToPath(new URL(`../${p}`, import.meta.url)) // repo root
 const read = (p) => readFile(root(p))
 
 const fontFiles = [

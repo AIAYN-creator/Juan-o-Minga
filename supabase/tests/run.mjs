@@ -8,7 +8,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 
-const root = fileURLToPath(new URL('../supabase/', import.meta.url))
+const root = fileURLToPath(new URL('../', import.meta.url)) // supabase/
 const read = (...p) => readFile(join(root, ...p), 'utf8')
 
 const migrations = (await readdir(join(root, 'migrations'))).filter((f) => f.endsWith('.sql')).sort()
