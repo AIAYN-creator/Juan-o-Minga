@@ -16,10 +16,14 @@ Juego web diario para la Peña Los Mingas y la Xaranga A Vorem. Cada día salen 
 | Sistema visual, marca (emblema, favicon, banner para compartir) | ✅ Hecho |
 | Login con Google y elección de apodo | ✅ Hecho |
 | Pantallas: inicio, ranking (público), buzón | ✅ Hechas |
-| Pantalla de juego, resultado y compartir, pulido final | 🚧 En curso |
-| Proyecto de Supabase real y dominio `juanominga.com` | ⏳ Pendiente de configurar |
+| Pantalla de juego, resultado y compartir, pulido final | ✅ Hecho |
+| Cuenta atrás hasta el estreno (viernes 2 de octubre de 2026, 18:30) y página de privacidad | ✅ Hecho |
+| Proyecto de Supabase real y login de Google en producción | ✅ Hecho |
+| Teaser (9:16 y 4:3) | ✅ Hecho |
+| Frases reales del estreno | ⏳ Pendiente de cargar |
+| Dominio `juanominga.com` | ⏳ Pendiente de migrar |
 
-Mientras no existan las variables de Supabase, la web publicada muestra "El plató está en obras".
+Si faltan las variables de Supabase (por ejemplo en un fork), la web muestra la cuenta atrás con la fecha por defecto y, pasado el estreno, "El plató está en obras" en lugar del juego.
 
 ## Cómo funciona la seguridad
 
