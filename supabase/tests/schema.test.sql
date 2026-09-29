@@ -56,3 +56,22 @@ begin
     '23505', 'app_config is a single row');
 end
 $$;
+
+-- Imports that store empty cells as '' (instead of null) still load: blank
+-- authors become null and text is trimmed, so peñista rows pass the checks.
+do $$
+declare
+  p uuid;
+begin
+  insert into phrases (text, side, author, context, status)
+  values ('  Frase importada  ', 'penista', '', '  Verbena  ', 'approved') returning id into p;
+  assert (select author is null and text = 'Frase importada' and context = 'Verbena' from phrases where id = p),
+    'blank author -> null, text and context trimmed';
+  insert into phrases (text, side, author, context, status)
+  values ('Otra', 'charanga', '   ', 'Ensayo', 'approved') returning id into p;
+  assert (select author is null from phrases where id = p), 'whitespace-only author -> null';
+  perform tests.expect_error(
+    $q$insert into phrases (text, side, author, context) values ('Hola', 'penista', 'Fulano', 'x')$q$,
+    '23514', 'a real author on a peñista is still refused');
+end
+$$;
