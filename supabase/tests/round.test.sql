@@ -30,7 +30,8 @@ begin
     ('Rechazada', 'penista', 'x', 'rejected');
 
   -- launched 4 days ago -> today is #5
-  update app_config set launch_date = (now() at time zone 'Europe/Madrid')::date - 4;
+  update app_config set launch_date = (now() at time zone 'Europe/Madrid')::date - 4,
+                        launch_at = now() - interval '4 days'; -- curtain already up
 end
 $$;
 

@@ -5,6 +5,7 @@ do $$
 declare
   uid uuid := tests.create_user('Ana');
 begin
+  update app_config set launch_at = now() - interval '1 day';
   update phrases set status = 'pending' where right(id::text, 2)::int >= 3; -- only 2 approved left
   perform tests.login(uid);
 end
