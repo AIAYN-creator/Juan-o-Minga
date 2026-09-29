@@ -39,7 +39,7 @@
   // Pick up where the player left off (and after a reload triggered by an error).
   $effect(() => {
     if (round.status !== 'ready' || phase !== 'ask') return
-    if (round.finished && position === null) navigate('/')
+    if (round.finished && position === null) navigate('/resultado')
     else if (position === null || round.rows.find((r) => r.position === position)?.answered)
       position = round.current?.position ?? null
   })
@@ -95,7 +95,7 @@
     target = null
     landed = false
     if (isLast) {
-      navigate('/')
+      navigate('/resultado')
       return
     }
     position = round.current?.position ?? null

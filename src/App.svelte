@@ -1,5 +1,6 @@
 <script lang="ts">
   import mark from '../brand/mark.svg'
+  import { launch } from './lib/launch.svelte'
   import { redirect, router, type Route } from './lib/router.svelte'
   import { session } from './lib/session.svelte'
   import { configError } from './lib/supabase'
@@ -8,14 +9,18 @@
   import Intro from './screens/Intro.svelte'
   import Leaderboard from './screens/Leaderboard.svelte'
   import Nickname from './screens/Nickname.svelte'
+  import Result from './screens/Result.svelte'
   import SuggestionBox from './screens/SuggestionBox.svelte'
 
   // Routes that need a player with a nickname. The ranking is public.
-  const playerOnly: Route[] = ['/jugar', '/buzon']
+  const playerOnly: Route[] = ['/jugar', '/resultado', '/buzon']
+  // Routes closed until the curtain rises.
+  const gameOnly: Route[] = ['/jugar', '/resultado']
 
   const isKit = $derived(import.meta.env.DEV && router.current === '/kit')
 
   session.start()
+  void launch.load()
 
   // Guards: no nickname -> onboarding; onboarding only while it's needed;
   // playing and the suggestion box need a player.
@@ -26,6 +31,7 @@
     if (status === 'needs-nickname' && route !== '/apodo') redirect('/apodo')
     else if (status !== 'needs-nickname' && status !== 'loading' && route === '/apodo') redirect('/')
     else if (status === 'anon' && playerOnly.includes(route)) redirect('/')
+    else if (launch.open === false && gameOnly.includes(route)) redirect('/')
   })
 
   // Each screen starts at the top.
@@ -59,6 +65,8 @@
   <SuggestionBox />
 {:else if router.current === '/jugar'}
   <Game />
+{:else if router.current === '/resultado'}
+  <Result />
 {:else}
   <Intro />
 {/if}

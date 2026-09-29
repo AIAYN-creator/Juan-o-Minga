@@ -2,15 +2,18 @@
   Intro: the TV-show set. Marquee with the slot-machine emblem and the neon
   logo, one giant call to action, and the way to the ranking, the suggestion
   box and the rules. If today's round is done: the day's score and a countdown.
+  Before launch: a big countdown to opening night instead of the game.
 -->
 <script lang="ts">
   import mark from '../../brand/mark.svg'
   import { href } from '../lib/router.svelte'
-  import { round } from '../lib/round.svelte'
+  import { launch } from '../lib/launch.svelte'
+  import { round, verdictFor } from '../lib/round.svelte'
   import { session } from '../lib/session.svelte'
   import ArcadeButton from '../lib/ui/ArcadeButton.svelte'
   import Countdown from '../lib/ui/Countdown.svelte'
   import HowToPlay from '../lib/ui/HowToPlay.svelte'
+  import LaunchCountdown from '../lib/ui/LaunchCountdown.svelte'
   import Marquee from '../lib/ui/Marquee.svelte'
   import NeonLogo from '../lib/ui/NeonLogo.svelte'
   import Reel, { type ReelItem } from '../lib/ui/Reel.svelte'
@@ -22,9 +25,14 @@
 
   let howTo: HowToPlay
 
-  // Load today's round once the player is known, to know if they already played.
+  void launch.load()
+
+  const prelaunch = $derived(launch.open === false)
+
+  // Once the game is open and the player is known, load today's round to know
+  // if they already played. Also fires when the countdown reaches zero.
   $effect(() => {
-    if (session.status === 'ready' && round.status === 'idle') void round.load()
+    if (session.status === 'ready' && launch.open && round.status === 'idle') void round.load()
     if (session.status === 'anon' && round.status !== 'idle') round.reset()
   })
 
@@ -34,15 +42,7 @@
     return round.answered > 0 ? 'Continuar' : 'Jugar'
   })
 
-  const verdict = $derived(
-    round.correct === 3
-      ? '¡PLENO!'
-      : round.correct === 2
-        ? '2 de 3, no está mal'
-        : round.correct === 1
-          ? '1 de 3, algo es algo'
-          : '0 de 3, eres más de pueblo que nosotros',
-  )
+  const verdict = $derived(verdictFor(round.correct))
 </script>
 
 <main class="page intro">
@@ -52,9 +52,19 @@
       <NeonLogo />
       <p class="tagline">¿Lo dijo uno de la charanga o un peñista?</p>
 
-      {#if session.status === 'anon'}
+      {#if prelaunch && launch.at}
+        <LaunchCountdown ms={launch.msLeft} at={launch.at} />
+        {#if session.status === 'anon'}
+          <ArcadeButton size="lg" block onclick={() => session.signIn()}>Reserva tu apodo</ArcadeButton>
+          <p class="fine">Entra con Google y elige ya el apodo que saldrá en el ranking. Nunca se verá tu cuenta.</p>
+        {:else if session.profile}
+          <p class="fine">Apodo reservado: <strong class="nick">{session.profile.nickname}</strong>. Nos vemos en el estreno.</p>
+        {/if}
+      {:else if session.status === 'anon'}
         <ArcadeButton size="lg" block onclick={() => session.signIn()}>Entrar con Google</ArcadeButton>
         <p class="fine">Solo para saber quién eres. En el ranking saldrá el apodo que elijas, nunca tu cuenta.</p>
+      {:else if launch.open === null}
+        <p class="fine" aria-busy="true">Calentando los rodillos…</p>
       {:else if cta}
         <ArcadeButton size="xl" href={href('/jugar')}>{cta}</ArcadeButton>
         {#if round.number}<p class="fine">Juan o Minga #{round.number}</p>{/if}
@@ -67,6 +77,7 @@
             {/each}
           </div>
           <p class="verdict gold-text">{verdict}</p>
+          <ArcadeButton variant="green" href={href('/resultado')}>Ver resultado</ArcadeButton>
           <Countdown ondone={() => round.load()} />
         </div>
       {:else if round.status === 'error'}
@@ -168,6 +179,10 @@
   .verdict {
     font-family: var(--font-display);
     font-size: var(--text-lg);
+  }
+
+  .nick {
+    color: var(--ink);
   }
 
   .error {

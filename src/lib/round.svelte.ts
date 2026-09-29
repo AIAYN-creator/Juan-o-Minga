@@ -19,6 +19,14 @@ export type RoundRow = {
   context: string | null
 }
 
+/** The line under the day's score. */
+export function verdictFor(correct: number): string {
+  if (correct === 3) return '¡PLENO!'
+  if (correct === 2) return '2 de 3, no está mal'
+  if (correct === 1) return '1 de 3, algo es algo'
+  return '0 de 3, eres más de pueblo que nosotros'
+}
+
 class Round {
   rows = $state<RoundRow[]>([])
   status = $state<'idle' | 'loading' | 'ready' | 'error'>('idle')
@@ -38,7 +46,9 @@ class Round {
       this.error =
         error.message === 'not_enough_phrases'
           ? 'Hoy el jurado no ha preparado frases. Vuelve más tarde.'
-          : 'No hemos podido cargar la ronda de hoy.'
+          : error.message === 'not_launched'
+            ? 'Todavía no ha empezado el concurso. ¡Paciencia!'
+            : 'No hemos podido cargar la ronda de hoy.'
       return
     }
     this.rows = (data as RoundRow[]) ?? []
