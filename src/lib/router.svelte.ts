@@ -1,5 +1,5 @@
 // Hash routing (#/ranking): works on GitHub Pages under a subpath with no
-// server-side fallback, and keeps working unchanged on juanominga.com.
+// server-side fallback, and keeps working unchanged on a custom domain.
 
 // '/kit' is the design-system showroom; App only renders it in dev builds.
 export const routes = ['/', '/jugar', '/resultado', '/ranking', '/buzon', '/apodo', '/kit'] as const

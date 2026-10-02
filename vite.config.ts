@@ -2,14 +2,14 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 
 // BASE_PATH is the public path the app is served from:
-// "/Juan-o-Minga/" on aiayn-creator.github.io/Juan-o-Minga, "/" on juanominga.com.
+// "/Juan-o-Minga/" on aiayn-creator.github.io/Juan-o-Minga, "/" on a custom domain.
 function normalizeBase(raw: string | undefined): string {
   const trimmed = (raw ?? '').trim().replace(/^\/+|\/+$/g, '')
   return trimmed ? `/${trimmed}/` : '/'
 }
 
 // Link previews need absolute URLs (og:image, og:url). SITE_URL is the public
-// root, e.g. https://juanominga.com/; CI takes it from the Pages settings.
+// root, e.g. https://aiayn-creator.github.io/Juan-o-Minga/; CI takes it from the Pages settings.
 function siteUrl(url: string): Plugin {
   return {
     name: 'site-url',

@@ -30,8 +30,8 @@ jobs:
 
       - run: npm run check
 
-      # Pages knows the public URL: github.io subpath now, juanominga.com once the
-      # custom domain is set. base_path is "/Juan-o-Minga" or "" respectively.
+      # Pages knows the public URL: the github.io subpath, or a domain if one is ever
+      # set. base_path is "/Juan-o-Minga" or "" respectively.
       - id: pages
         uses: actions/configure-pages@v6
 
@@ -47,7 +47,7 @@ jobs:
           # Absolute root for link previews (og:image, og:url).
           SITE_URL: ${{ steps.pages.outputs.base_url }}/
 
-      # Any unknown path (e.g. juanominga.com/jugar) still loads the app, and the
+      # Any unknown path (e.g. /Juan-o-Minga/jugar) still loads the app, and the
       # hash router falls back to the intro screen.
       - name: SPA fallback
         run: cp dist/index.html dist/404.html
