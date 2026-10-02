@@ -1,7 +1,7 @@
 <!--
   Public leaderboard (no login needed): arcade high-score board. Gold, silver
   and bronze podium, then the rest; the caller's row is highlighted. Players
-  with under 5 days are listed apart as "aspirantes". Nicknames only.
+  with under 3 days are listed apart as "aspirantes". Nicknames only.
 -->
 <script lang="ts">
   import { href } from '../lib/router.svelte'
@@ -54,7 +54,7 @@
   <header class="head">
     <p class="kicker">Salón de la fama</p>
     <h1 class="gold-text">Ranking</h1>
-    <p class="sub">Por % de aciertos · mínimo 5 días jugados</p>
+    <p class="sub">Por % de aciertos · mínimo 3 días jugados</p>
   </header>
 
   {#if status === 'loading'}
@@ -89,7 +89,7 @@
     {#if aspirants.length}
       <section class="aspirants">
         <h2 class="gold-text">Aspirantes</h2>
-        <p class="sub">Menos de 5 días jugados. Sigue viniendo y entras en el ranking.</p>
+        <p class="sub">Menos de 3 días jugados. Sigue viniendo y entras en el ranking.</p>
         {@render table(aspirants, 'Aspirantes')}
       </section>
     {/if}
