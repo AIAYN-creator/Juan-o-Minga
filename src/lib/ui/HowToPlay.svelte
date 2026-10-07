@@ -29,6 +29,11 @@
       <li><strong>Un solo intento.</strong> Lo pulsado, pulsado está.</li>
       <li>Tras cada respuesta verás quién lo dijo y cuándo.</li>
       <li><strong>Vuelve mañana</strong> a medianoche: frases nuevas.</li>
+      <li>
+        <strong>Chívate en el buzón:</strong> cada 3 frases tuyas aprobadas ganas un 🛡️ protector
+        (hasta 2) que salva tu racha si un día no juegas. Quien más frases cuela lleva el
+        📣 Megáfono de oro.
+      </li>
     </ol>
     <ArcadeButton block onclick={close}>¡Entendido!</ArcadeButton>
   </div>

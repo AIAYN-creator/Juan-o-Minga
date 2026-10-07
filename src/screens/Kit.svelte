@@ -13,6 +13,7 @@
   import ProgressBulbs, { type BulbState } from '../lib/ui/ProgressBulbs.svelte'
   import Reel, { type ReelItem } from '../lib/ui/Reel.svelte'
   import RollingNumber from '../lib/ui/RollingNumber.svelte'
+  import SnitchCard from '../lib/ui/SnitchCard.svelte'
   import StageScreen from '../lib/ui/StageScreen.svelte'
 
   const sides: ReelItem[] = [
@@ -134,6 +135,9 @@
       Cambiar números
     </ArcadeButton>
   </Panel>
+
+  <SnitchCard shields={0} progress={1} />
+  <SnitchCard shields={2} progress={0} />
 
   <Panel title="Botones">
     <div class="buttons">

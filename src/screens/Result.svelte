@@ -1,7 +1,8 @@
 <!--
   Final score, slot-machine style: three big reels land one after another on
-  ✓ or ✗, then the verdict (jackpot coins on a PLENO), COMPARTIR, the countdown
-  to the next round and the player's own stats.
+  ✓ or ✗, then the verdict (jackpot coins on a PLENO), COMPARTIR, the nudge to
+  the suggestion box (with the streak-shield progress), the countdown to the
+  next round and the player's own stats.
 -->
 <script lang="ts">
   import { celebrate } from '../lib/fx/confetti'
@@ -15,6 +16,7 @@
   import Panel from '../lib/ui/Panel.svelte'
   import Reel, { type ReelItem } from '../lib/ui/Reel.svelte'
   import RollingNumber from '../lib/ui/RollingNumber.svelte'
+  import SnitchCard from '../lib/ui/SnitchCard.svelte'
 
   type Stats = {
     days_played: number
@@ -28,6 +30,11 @@
     dist_1: number
     dist_2: number
     dist_3: number
+    approved_phrases: number
+    top_contributor: boolean
+    shields: number
+    shield_progress: number
+    shield_saved_today: boolean
   }
 
   const marks: ReelItem[] = [
@@ -76,6 +83,9 @@
   )
   const distMax = $derived(Math.max(1, ...dist))
 
+  const shieldIcons = (n: number) => '🛡️'.repeat(n)
+  const shieldLeft = (n: number) => (n === 0 ? 'No te quedan más.' : n === 1 ? 'Te queda 1.' : `Te quedan ${n}.`)
+
   async function share() {
     const outcome = await shareResult(text)
     toast =
@@ -118,6 +128,18 @@
     {#if toast}<p class="toast fx-pop-in" role="status">{toast}</p>{/if}
   </div>
 
+  {#if stats?.shield_saved_today}
+    <p class="saved fx-pop-in" role="status">
+      🛡️ Tu protector ha salvado tu racha de {stats.current_streak} días. {shieldLeft(stats.shields)}
+    </p>
+  {/if}
+
+  {#if stats?.top_contributor}
+    <p class="megaphone fx-pop-in"><span aria-hidden="true">📣</span> Megáfono de oro: eres el mayor chivato de la peña</p>
+  {/if}
+
+  <SnitchCard shields={stats?.shields} progress={stats?.shield_progress} />
+
   <Countdown ondone={() => navigate('/')} />
 
   <Panel title="Tus números">
@@ -128,6 +150,10 @@
         <div><dt>Racha</dt><dd><RollingNumber value={stats.current_streak} tone="cyan" /></dd></div>
         <div><dt>Mejor racha</dt><dd><RollingNumber value={stats.best_streak} tone="cyan" /></dd></div>
         <div><dt>Plenos</dt><dd><RollingNumber value={stats.perfect_days} /></dd></div>
+        <div>
+          <dt>Protectores</dt>
+          <dd class="shields" aria-label="{stats.shields} protectores de racha">{stats.shields ? shieldIcons(stats.shields) : '—'}</dd>
+        </div>
       </dl>
       <p class="dist-title">Cómo acaban tus días</p>
       <ol class="dist">
@@ -234,6 +260,30 @@
     box-shadow: var(--glow-green);
     font-weight: 700;
     color: #fff;
+  }
+
+  .saved,
+  .megaphone {
+    justify-self: center;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .saved {
+    background: rgba(47, 243, 255, 0.15);
+    box-shadow: inset 0 0 0 1px rgba(47, 243, 255, 0.6), var(--glow-cyan);
+    color: #e6feff;
+  }
+
+  .megaphone {
+    background: var(--gold-metal);
+    color: var(--ink-on-gold);
+  }
+
+  .shields {
+    font-size: 1.4rem;
   }
 
   .stats {

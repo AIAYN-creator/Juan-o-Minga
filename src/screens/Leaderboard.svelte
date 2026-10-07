@@ -1,7 +1,8 @@
 <!--
   Public leaderboard (no login needed): arcade high-score board. Gold, silver
   and bronze podium, then the rest; the caller's row is highlighted. Players
-  with under 3 days are listed apart as "aspirantes". Nicknames only.
+  with under 3 days are listed apart as "aspirantes". Nicknames only, plus the
+  📣 Megáfono de oro (top sender to the suggestion box) and streak shields 🛡️.
 -->
 <script lang="ts">
   import { href } from '../lib/router.svelte'
@@ -21,6 +22,8 @@
     perfect_days: number
     qualified: boolean
     is_me: boolean
+    shields: number
+    top_contributor: boolean
   }
 
   let rows = $state<Row[]>([])
@@ -46,6 +49,8 @@
   // Visual order on the podium: 2nd, 1st, 3rd
   const podiumOrder = $derived([podium[1], podium[0], podium[2]].filter(Boolean) as Row[])
 
+  const anyMegaphone = $derived(rows.some((r) => r.top_contributor))
+  const anyShield = $derived(rows.some((r) => r.shields > 0))
   const pct = (r: Row) => (r.pct === null ? '—' : `${Math.round(r.pct)}%`)
   const medal = (r: Row) => (r === podium[0] ? 'gold' : r === podium[1] ? 'silver' : 'bronze')
 </script>
@@ -55,6 +60,12 @@
     <p class="kicker">Salón de la fama</p>
     <h1 class="gold-text">Ranking</h1>
     <p class="sub">Por % de aciertos · mínimo 3 días jugados</p>
+    {#if anyMegaphone || anyShield}
+      <p class="sub legend">
+        {#if anyMegaphone}<span>📣 Megáfono de oro: el mayor chivato</span>{/if}
+        {#if anyShield}<span>🛡️ Protector de racha</span>{/if}
+      </p>
+    {/if}
   </header>
 
   {#if status === 'loading'}
@@ -72,7 +83,7 @@
         {#each podiumOrder as r (r.nickname)}
           <li class="step {medal(r)}" class:me={r.is_me}>
             <span class="crown" aria-hidden="true">{medal(r) === 'gold' ? '👑' : ''}</span>
-            <span class="name">{r.nickname}</span>
+            <span class="name">{r.nickname}{@render megaphone(r)}</span>
             <span class="led pct">{pct(r)}</span>
             <span class="block">
               <span class="place">{r.rank}</span>
@@ -100,6 +111,12 @@
   </nav>
 </main>
 
+{#snippet megaphone(r: Row)}
+  {#if r.top_contributor}<span class="megaphone" title="Megáfono de oro: el mayor chivato de la peña"
+      ><span aria-hidden="true">📣</span><span class="sr-only">, Megáfono de oro</span></span
+    >{/if}
+{/snippet}
+
 {#snippet table(list: Row[], caption: string)}
   <table class="scores">
     <caption class="sr-only">{caption}</caption>
@@ -117,12 +134,19 @@
         <tr class:me={r.is_me}>
           <td class="led">{r.rank}</td>
           <td class="nick">
-            {r.nickname}
-            {#if r.is_me}<span class="you">Tú</span>{/if}
+            <span class="nick-row">
+              <span class="nick-text">{r.nickname}</span>{@render megaphone(r)}
+              {#if r.is_me}<span class="you">Tú</span>{/if}
+            </span>
           </td>
           <td class="led">{pct(r)}</td>
           <td class="led">{r.days_played}</td>
-          <td class="led">{r.current_streak}{#if r.current_streak >= 3}<span aria-hidden="true">🔥</span>{/if}</td>
+          <td class="led">
+            {r.current_streak}{#if r.current_streak >= 3}<span aria-hidden="true">🔥</span>{/if}{#if r.shields}<span
+                class="shield"
+                title="{r.shields} protector{r.shields > 1 ? 'es' : ''} de racha">{'🛡️'.repeat(r.shields)}</span
+              ><span class="sr-only">, {r.shields} protector{r.shields > 1 ? 'es' : ''} de racha</span>{/if}
+          </td>
         </tr>
       {/each}
     </tbody>
@@ -328,6 +352,41 @@
     font-family: var(--font-display);
     font-size: 0.7rem;
     color: #002b30;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 var(--space-3);
+    color: var(--ink-dim);
+  }
+
+  /* The nickname ellipsizes; the 📣 and the "Tú" pill always stay visible */
+  .nick-row {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .nick-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .megaphone,
+  .you {
+    flex: none;
+  }
+
+  .megaphone {
+    margin-left: 0.3em;
+  }
+
+  .shield {
+    margin-left: 0.15em;
+    font-size: 0.85em;
   }
 
   .aspirants {
