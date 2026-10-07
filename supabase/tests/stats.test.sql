@@ -100,8 +100,8 @@ begin
   assert (select array_agg(k order by k) from jsonb_object_keys(
             (select to_jsonb(l) from get_leaderboard() l limit 1)) k)
     = array['answered', 'best_streak', 'correct', 'current_streak', 'days_played', 'is_me',
-            'nickname', 'pct', 'perfect_days', 'qualified', 'rank'],
-    'leaderboard exposes nickname and stats only (no ids, no email)';
+            'nickname', 'pct', 'perfect_days', 'qualified', 'rank', 'shields', 'top_contributor'],
+    'leaderboard exposes nickname and stats only (no ids, no email, no phrase counts)';
 
   perform tests.expect_error('select * from get_my_stats()', '42501', 'anon has no personal stats');
   perform tests.expect_error('select * from private.player_stats()', '42501', 'private schema is off limits');
