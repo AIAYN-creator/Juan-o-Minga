@@ -5,6 +5,7 @@
 Juego web diario para la Peña Los Mingas y la Xaranga A Vorem. Cada día salen las mismas 3 frases para todo el mundo y hay que adivinar si la dijo alguien de la charanga (**AVOREM**) o un peñista (**PEÑISTA**). Tiene ranking público, buzón para proponer frases y un resultado para compartir por WhatsApp.
 
 - **Web:** https://aiayn-creator.github.io/Juan-o-Minga/
+- **Versión:** 2.0.0 (7 de octubre de 2026). Notas de todas las versiones en la propia web, en [Novedades](https://aiayn-creator.github.io/Juan-o-Minga/#/novedades).
 - **Estreno:** viernes 2 de octubre de 2026 a las 18:30 (hora de Madrid), con la ronda #1.
 - **Teaser:** [`brand/teaser-4x3.mp4`](brand/teaser-4x3.mp4), 19 s en formato tele antigua.
 - **Stack:** Vite + Svelte 5 + TypeScript, una SPA estática en GitHub Pages, sobre Supabase: Postgres, Auth con Google y funciones RPC. No hay servidor propio.
@@ -16,13 +17,16 @@ Juego web diario para la Peña Los Mingas y la Xaranga A Vorem. Cada día salen 
 3. **La revelación:** un rodillo de tragaperras dice quién la dijo y en qué contexto. Los peñistas nunca se nombran.
 4. **El resultado:** aciertos del día, racha y estadísticas, y un botón para compartirlo por WhatsApp.
 5. **El ranking** es público y ordena por % de aciertos. Se entra a partir de **3 días jugados**; antes, apareces en "Aspirantes".
-6. **El buzón:** cualquiera con sesión puede proponer frases (hasta 10 al día). Llegan como pendientes y solo entran al juego si se aprueban.
+6. **El buzón:** cualquiera con sesión puede proponer frases (hasta 10 al día). Llegan como pendientes y solo entran al juego si se aprueban. Al acabar la partida, el cartel **"¿Te sabes una mejor? Chívate"** lleva directo a él.
+7. **Recompensas por aportar** (desde la 2.0):
+   - 🛡️ **Protectores de racha:** cada 3 frases tuyas aprobadas, uno (como mucho 2 guardados). Si faltas algún día, al volver se gasta uno por día perdido y la racha sigue; si no alcanzan, la racha se rompe y no se gasta ninguno. Un día protegido no cuenta como jugado ni suma aciertos.
+   - 📣 **Megáfono de oro:** quien más frases tiene aprobadas lo lleva junto a su apodo en el ranking. Si hay empate, lo llevan todos.
 
 Si cierras la web a mitad de partida, al volver sigues donde lo dejaste.
 
 ## Estado
 
-**En producción.** Todo el alcance previsto está hecho:
+**En producción, versión 2.0.0.** Todo el alcance previsto está hecho:
 
 | Parte | Estado |
 |---|---|
@@ -33,6 +37,7 @@ Si cierras la web a mitad de partida, al volver sigues donde lo dejaste.
 | Cuenta atrás hasta el estreno y [página de privacidad](https://aiayn-creator.github.io/Juan-o-Minga/privacidad.html) | ✅ |
 | Supabase en producción (UE, París) y login de Google publicado | ✅ |
 | Frases reales cargadas y teaser | ✅ |
+| v2: cartel Chívate, protectores de racha 🛡️, Megáfono de oro 📣 y panel de novedades | ✅ Con tests |
 
 Si faltan las variables de Supabase (por ejemplo en un fork), la web muestra la cuenta atrás con la fecha por defecto y, pasado el estreno, "El plató está en obras" en lugar del juego.
 
@@ -46,6 +51,7 @@ La anon key de Supabase es pública por diseño; toda la seguridad está en la b
 - **El buzón guarda las frases como pendientes.** No entran al juego hasta que el administrador las aprueba en Supabase.
 - **El ranking solo muestra apodos.** El nombre y el correo de Google nunca salen de Supabase Auth.
 - **Las tablas no se leen desde fuera.** Con la clave pública solo se puede leer la fecha de estreno (`app_config`) y llamar al ranking; todo lo demás pasa por funciones que comprueban la sesión. El esquema `private` y `auth` no están expuestos.
+- **Las recompensas tampoco se ven desde fuera.** Los protectores y los días protegidos viven en el esquema `private`; el ranking dice cuántos protectores tiene cada uno y quién lleva el megáfono, pero nunca cuántas frases ha mandado nadie (eso solo lo ve cada uno en su resultado).
 - **Solo se entra con Google.** El registro por email, teléfono y anónimo está desactivado.
 - **Las frases reales nunca se commitean,** porque el repo es público. `supabase/seed.sql` solo lleva frases inventadas para desarrollo.
 
@@ -74,8 +80,8 @@ npm run dev
 
 ## Estructura
 
-- `src/screens/` — pantallas: `Intro`, `Nickname` (onboarding), `Game`, `Result`, `Leaderboard`, `SuggestionBox`, y `Kit`, que solo existe en desarrollo.
-- `src/lib/` — sesión (`session.svelte.ts`), ronda del día (`round.svelte.ts`), cuenta atrás (`launch.svelte.ts`), compartir (`share.ts`), router por hash, cliente de Supabase y hora de Madrid.
+- `src/screens/` — pantallas: `Intro`, `Nickname` (onboarding), `Game`, `Result`, `Leaderboard`, `SuggestionBox`, `News` (notas de las versiones), y `Kit`, que solo existe en desarrollo.
+- `src/lib/` — sesión (`session.svelte.ts`), ronda del día (`round.svelte.ts`), cuenta atrás (`launch.svelte.ts`), compartir (`share.ts`), novedades (`news.ts`), router por hash, cliente de Supabase y hora de Madrid.
 - `src/lib/ui/` — componentes del plató: marquesina, logo de neón, pulsadores, rodillo, contadores, bombillas, pantalla de la frase…
 - `src/styles/` — tokens (paleta, tipografías, movimiento) y estilos globales.
 - `public/` — archivos que se sirven tal cual: favicon, iconos, banner para compartir (estos tres, generados) y `privacidad.html`.
@@ -87,6 +93,14 @@ npm run dev
 
 En la raíz solo queda lo que las herramientas esperan encontrar ahí: `index.html` (entrada de Vite), `vite.config.ts`, los tres `tsconfig*.json` (app y config de Node, como en la plantilla oficial), `package.json`, `.env.example`, `LICENSE` y este README.
 
+## Versiones
+
+Las notas de cada versión están en `src/lib/news.ts`: es la única fuente del panel de novedades, de la pantalla `#/novedades` y del enlace "Novedades · vX" del inicio. Para publicar una versión:
+
+1. Añadir su entrada al principio de `releases` en `src/lib/news.ts` y subir `version` en `package.json`.
+2. Al publicarse, **el panel sale una vez a todo el mundo**: cada perfil guarda la última versión vista (`profiles.news_seen`, que solo avanza con `mark_news_seen()`), y sin sesión se recuerda en el navegador.
+3. Etiquetar el commit (`vX.Y.Z`) y crear la release en GitHub con las mismas notas.
+
 ## Puesta en marcha (para montar una copia)
 
 1. **Supabase y Google:** crear el proyecto, configurar el login con Google y las URLs de redirección, y dejar desactivados el registro por email y el anónimo. Después, ejecutar las migraciones de `supabase/migrations/` en orden en el *SQL Editor*. **Nunca `seed.sql` en producción.**
@@ -97,7 +111,7 @@ En la raíz solo queda lo que las herramientas esperan encontrar ahí: `index.ht
 ## Mantenimiento
 
 - **Añadir frases:** en la tabla `phrases`, con `status = approved` y un `context` (cuándo y dónde se dijo). Los peñistas, siempre sin `author`. Cada día se eligen 3 empezando por las que nunca han salido; cuando se acaban, se repiten las más antiguas.
-- **Moderar el buzón:** las propuestas llegan con `status = pending`. Basta con cambiarlo a `approved` o `rejected` en el editor de tablas, revisando antes que no nombren a ningún peñista.
+- **Moderar el buzón:** las propuestas llegan con `status = pending`. Basta con cambiarlo a `approved` o `rejected` en el editor de tablas, revisando antes que no nombren a ningún peñista. Al aprobar, los protectores y el megáfono se actualizan solos (un trigger); las frases cargadas a mano, sin remitente, no cuentan para nadie.
 - **Borrar una cuenta** (derecho de supresión): borrar el usuario en *Authentication → Users*; su perfil y sus respuestas se borran en cascada, y sus frases del buzón quedan sin remitente.
 
 ## Licencia
