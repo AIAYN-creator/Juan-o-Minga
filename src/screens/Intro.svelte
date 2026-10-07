@@ -3,6 +3,8 @@
   logo, one giant call to action, and the way to the ranking, the suggestion
   box and the rules. If today's round is done: the day's score and a countdown.
   Before launch: a big countdown to opening night instead of the game.
+  Each new release shows its what's-new panel here once per player (profile)
+  or per browser (no session); never during a game.
 -->
 <script lang="ts">
   import mark from '../../brand/mark.svg'
@@ -16,6 +18,8 @@
   import LaunchCountdown from '../lib/ui/LaunchCountdown.svelte'
   import Marquee from '../lib/ui/Marquee.svelte'
   import NeonLogo from '../lib/ui/NeonLogo.svelte'
+  import WhatsNew from '../lib/ui/WhatsNew.svelte'
+  import { isNewer, latest, localSeen, rememberSeen } from '../lib/news'
   import Reel, { type ReelItem } from '../lib/ui/Reel.svelte'
 
   const marks: ReelItem[] = [
@@ -24,6 +28,27 @@
   ]
 
   let howTo: HowToPlay
+  let whatsNew: WhatsNew
+  let newsChecked = false
+
+  // What's new, once per version: the profile remembers it across devices, the
+  // browser remembers it without a session (and hands it to the profile on login).
+  $effect(() => {
+    const status = session.status
+    if (newsChecked || !whatsNew || (status !== 'anon' && status !== 'ready')) return
+    newsChecked = true
+    const local = localSeen()
+    let seen = local
+    if (status === 'ready' && session.profile) {
+      const remote = session.profile.news_seen
+      if (local && isNewer(local, remote)) void session.markNewsSeen(local)
+      else seen = remote
+    }
+    if (!isNewer(latest.version, seen)) return
+    whatsNew.open()
+    rememberSeen(latest.version)
+    if (status === 'ready') void session.markNewsSeen(latest.version)
+  })
 
   void launch.load()
 
@@ -98,7 +123,9 @@
     <ArcadeButton variant="gold" onclick={() => howTo.open()}>¿Cómo se juega?</ArcadeButton>
   </nav>
 
-  <p class="legal"><a href="privacidad.html">Privacidad</a></p>
+  <p class="legal">
+    <a href={href('/novedades')}>Novedades · v{latest.version}</a> · <a href="privacidad.html">Privacidad</a>
+  </p>
 
   {#if session.status === 'ready'}
     <p class="who">
@@ -109,6 +136,7 @@
 </main>
 
 <HowToPlay bind:this={howTo} />
+<WhatsNew bind:this={whatsNew} canSnitch={session.status === 'ready'} />
 
 <style>
   .intro {

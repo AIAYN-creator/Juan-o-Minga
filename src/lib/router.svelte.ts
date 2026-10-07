@@ -2,7 +2,7 @@
 // server-side fallback, and keeps working unchanged on a custom domain.
 
 // '/kit' is the design-system showroom; App only renders it in dev builds.
-export const routes = ['/', '/jugar', '/resultado', '/ranking', '/buzon', '/apodo', '/kit'] as const
+export const routes = ['/', '/jugar', '/resultado', '/ranking', '/buzon', '/apodo', '/novedades', '/kit'] as const
 export type Route = (typeof routes)[number]
 
 function parse(hash: string): Route {

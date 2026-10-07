@@ -10,6 +10,7 @@
   import Game from './screens/Game.svelte'
   import Intro from './screens/Intro.svelte'
   import Leaderboard from './screens/Leaderboard.svelte'
+  import News from './screens/News.svelte'
   import Nickname from './screens/Nickname.svelte'
   import Result from './screens/Result.svelte'
   import SuggestionBox from './screens/SuggestionBox.svelte'
@@ -42,6 +43,7 @@
     '/ranking': 'Ranking',
     '/buzon': 'Buzón',
     '/apodo': 'Elige apodo',
+    '/novedades': 'Novedades',
   }
 
   // Each screen starts at the top and names the tab.
@@ -86,6 +88,8 @@
         <Nickname />
       {:else if router.current === '/ranking'}
         <Leaderboard />
+      {:else if router.current === '/novedades'}
+        <News />
       {:else if router.current === '/buzon'}
         <SuggestionBox />
       {:else if router.current === '/jugar'}

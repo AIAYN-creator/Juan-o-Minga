@@ -9,7 +9,7 @@
 import type { User } from '@supabase/supabase-js'
 import { appUrl, configError, supabase } from './supabase'
 
-export type Profile = { id: string; nickname: string }
+export type Profile = { id: string; nickname: string; news_seen: string | null }
 export type SessionStatus = 'loading' | 'anon' | 'needs-nickname' | 'ready'
 
 export const NICKNAME_MIN = 3
@@ -74,7 +74,7 @@ class Session {
     const { data, error } = await supabase
       .from('profiles')
       .insert({ id: this.user.id, nickname: raw.trim() })
-      .select('id, nickname')
+      .select('id, nickname, news_seen')
       .single()
 
     if (error) {
@@ -94,6 +94,13 @@ class Session {
     return null
   }
 
+  /** Release notes seen (what's-new panel): stored on the profile, never backwards. */
+  async markNewsSeen(version: string) {
+    if (!this.profile) return
+    this.profile.news_seen = version
+    await supabase.rpc('mark_news_seen', { p_version: version })
+  }
+
   async #loadProfile() {
     if (!this.user) {
       this.profile = null
@@ -102,7 +109,7 @@ class Session {
     }
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, nickname')
+      .select('id, nickname, news_seen')
       .eq('id', this.user.id)
       .maybeSingle()
     if (error) {
